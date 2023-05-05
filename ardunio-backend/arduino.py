@@ -1,4 +1,4 @@
-from fastapi import APIRouter,HTTPException,status
+from fastapi import APIRouter,HTTPException,status,Request
 import models
 from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
@@ -7,7 +7,10 @@ import tokenfile as tf
 import datetime
 from datetime import datetime
 from bson.objectid import ObjectId
+from jose import JWTError, jwt
+
 import requests
+
 
 index=0
 liste=["egearslan","ozerarslan","sarparslan","dorukarslan"]
@@ -35,6 +38,7 @@ async def delete_heat(username:str,delete_id:str):
             {"$pull": {"heat":heat_obj_id}},
         )
     return {"item was deleted"}
+    
 
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
@@ -52,7 +56,6 @@ async def add_heat(value:models.Arduino):
 
 
   return {"SELAM"}
-
 
 
 @ard.get("/get")
@@ -92,3 +95,69 @@ async def get_heat(temperature:str,humidity:str):
         return "WORKED"
 
    
+flu=APIRouter(
+    prefix="/flutter",
+    tags=["flutter"]
+)
+JWT_SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+JWT_ALGORITHM = "HS256"
+
+@flu.middleware("http")
+async def user_middleware(request: Request, call_next):
+    headers = request.headers
+    if "Authorization" in headers:
+        token = request.headers["Authorization"]
+        try:
+            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+            request.state.username = data["username"]
+            request.state.userID = data["user_id"]
+        except:
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "status": "failed",
+                    "message": "Authentication Failed",
+                },
+            )
+    else:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "status": "failed",
+                "message": "Authentication Failed",
+            },
+        )
+    response = await call_next(request)
+    return response
+
+@flu.get("/getHeat/{date_time}")
+async def get_user_courses(request: Request,data_time:str):
+    try:
+        user = db.user_col.find_one({"_id": ObjectId(request.state.userID)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        heat_ids = user["heat"]
+        heats = []
+        for heat_id in heat_ids:
+            heat = db.heat_col.find_one({"_id": ObjectId(heat_id)})
+            if heat:
+                # convert ObjectId to string
+                if(heat["date_time"]==data_time):
+                    return{"heat":heat}
+                
+
+            return {"heat could not found"}
+            
+                
+
+        
+
+    except:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "status": "failed",
+                "message": "Couldn't get the courses!",
+            },
+        )

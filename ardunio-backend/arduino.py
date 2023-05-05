@@ -27,6 +27,34 @@ flutter=APIRouter(
     tags=["flutter"]
 )
 
+@flutter.middleware("http")
+async def flutter_middleware(request: Request, call_next):
+    headers = request.headers
+    if "Authorization" in headers:
+        token = request.headers["Authorization"]
+        try:
+            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+            request.state.username = data["username"]
+            request.state.userID = data["user_id"]
+        except:
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "status": "failed",
+                    "message": "Authentication Failed",
+                },
+            )
+    else:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "status": "failed",
+                "message": "Authentication Failed",
+            },
+        )
+    response = await call_next(request)
+    return response
+
 
 @flutter.get("/getHeat/{date_time}")
 async def get_user_courses(request: Request,data_time:str):

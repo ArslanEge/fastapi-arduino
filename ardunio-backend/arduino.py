@@ -28,33 +28,33 @@ flutter=APIRouter(
 )
 
 
-@flutter.middleware("http")
-async def user_middleware(request: Request, call_next):
-    headers = request.headers
-    if "Authorization" in headers:
-        token = request.headers["Authorization"]
-        try:
-            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-            request.state.username = data["username"]
-            request.state.userID = data["user_id"]
-        except:
-            return JSONResponse(
-                status_code=403,
-                content={
-                    "status": "failed",
-                    "message": "Authentication Failed",
-                },
-            )
-    else:
+@flutter.get("/getHeat/{date_time}")
+async def get_user_courses(request: Request,data_time:str):
+    try:
+        user = db.user_col.find_one({"_id": ObjectId(request.state.userID)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        heat_ids = user["heat"]
+        heats = []
+        for heat_id in heat_ids:
+            heat = db.heat_col.find_one({"_id": ObjectId(heat_id)})
+            if heat:
+                # convert ObjectId to string
+                if(heat["date_time"]==data_time):
+                    return{"heat":heat}
+                
+
+            return {"heat could not found"}
+            
+    except:
         return JSONResponse(
             status_code=403,
             content={
                 "status": "failed",
-                "message": "Authentication Failed",
+                "message": "Couldn't get the courses!",
             },
         )
-    response = await call_next(request)
-    return response
 
 @ard.delete("/delete/{delete_id}")
 async def delete_heat(username:str,delete_id:str):

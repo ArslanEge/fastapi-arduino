@@ -27,6 +27,35 @@ flutter=APIRouter(
     tags=["arduino"]
 )
 
+
+@flutter.middleware("http")
+async def user_middleware(request: Request, call_next):
+    headers = request.headers
+    if "Authorization" in headers:
+        token = request.headers["Authorization"]
+        try:
+            data = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+            request.state.username = data["username"]
+            request.state.userID = data["user_id"]
+        except:
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "status": "failed",
+                    "message": "Authentication Failed",
+                },
+            )
+    else:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "status": "failed",
+                "message": "Authentication Failed",
+            },
+        )
+    response = await call_next(request)
+    return response
+
 @ard.delete("/delete/{delete_id}")
 async def delete_heat(username:str,delete_id:str):
     user = db.user_col.find_one({"username":username})

@@ -4,17 +4,18 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from user import user
-from arduino import ard
+from arduino import ard,flutter
 import models
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 
 
 
+
 app = FastAPI()
 app.include_router(user)
 app.include_router(ard)
-
+app.include_router(flutter)
 
 origins = [
    "http:// 192.168.0.11.:8000",

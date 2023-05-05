@@ -85,7 +85,7 @@ async def get_heat(temperature:str,humidity:str):
             response.raise_for_status()  # raise an exception for 4xx/5xx status codes
             print('Data successfully sent!')
         except requests.exceptions.HTTPError as e:
-            print('Failed to send dataa: {}'.format(e))
+            print('Failed to send data: {}'.format(e))
         except requests.exceptions.RequestException as e:
             print('Request error: {}'.format(e))
 

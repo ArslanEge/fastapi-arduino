@@ -1,4 +1,4 @@
-from fastapi import APIRouter,HTTPException,status,Request
+from fastapi import APIRouter,HTTPException,status,Request,FastAPI
 import models
 from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
@@ -8,8 +8,9 @@ import datetime
 from datetime import datetime
 from bson.objectid import ObjectId
 from jose import JWTError, jwt
-from main import app
 import requests
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 
@@ -18,6 +19,21 @@ liste=["egearslan","ozerarslan","sarparslan","dorukarslan"]
 
 JWT_SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 JWT_ALGORITHM = "HS256"
+
+app1=FastAPI()
+origins = [
+   "http:// 192.168.0.11.:8000",
+   "http://localhost",
+   "http://localhost:8080",
+]
+
+app1.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ard=APIRouter(
     prefix="/arduino",
@@ -28,7 +44,7 @@ flutter=APIRouter(
     tags=["flutter"]
 )
 
-@app.middleware("http")
+@app1.middleware("http")
 async def flutter_middleware(request: Request, call_next):
     headers = request.headers
     if "Authorization" in headers:
@@ -56,7 +72,6 @@ async def flutter_middleware(request: Request, call_next):
     response = await call_next(request)
     return response
 
-flutter.middleware("http")(flutter_middleware)
 
 @flutter.get("/getHeat/{date_time}")
 async def get_user_courses(request: Request,data_time:str):

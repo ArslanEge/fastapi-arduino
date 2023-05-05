@@ -30,9 +30,8 @@ async def add_heat(value:models.Arduino):
             {"username":liste[index]}, {"$push": {"heat":heat_id}}
         )
   
-  index=index+1
-  if(index==3):
-      index=0
+  global index
+  index = (index + 1) % len(liste)
   
   return {"SELAM"}
 

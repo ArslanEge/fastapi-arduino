@@ -73,7 +73,7 @@ async def flutter_middleware(request: Request, call_next):
     return response
 
 
-@flutter.get("/getHeat/{date_time}")
+@app1.get("/getHeat/{date_time}")
 async def get_user_courses(request: Request,data_time:str):
     try:
         user = db.user_col.find_one({"_id": ObjectId(request.state.userID)})

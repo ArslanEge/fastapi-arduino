@@ -41,7 +41,7 @@ async def get_heat(temperature:str,humidity:str):
 
         current_month = str(now.month)
         current_day = str(now.day)
-        current_hour = str(now.hour)
+        current_hour = str(now.hour+3)
         current_minute = str(now.minute)
 
         date_time = str(current_month+"/"+current_day+"/"+current_hour+"/"+current_minute)

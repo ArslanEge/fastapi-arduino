@@ -30,6 +30,7 @@ async def add_heat(value:models.Arduino):
   index=index+1
   
   
+  
   return {"SELAM"}
 
 

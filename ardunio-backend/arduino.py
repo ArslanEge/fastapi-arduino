@@ -42,7 +42,7 @@ async def get_heat(temperature:str,humidity:str):
         data = {
             'temperature': tvalue,
             'humidity': hvalue,
-            'date_time': date_time
+            'date_time1': date_time
         }
         header = {
       'Content-Type': 'application/json',

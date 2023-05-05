@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from user import user
-from arduino import ard,flu
+from arduino import ard
 import models
 from fastapi.middleware.cors import CORSMiddleware
 

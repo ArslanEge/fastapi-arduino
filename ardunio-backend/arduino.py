@@ -7,7 +7,6 @@ import tokenfile as tf
 import datetime
 from datetime import datetime
 import requests
-import pytz
 
 
 
@@ -15,32 +14,6 @@ ard=APIRouter(
     prefix="/arduino",
     tags=["arduino"]
 )
-
-def get_current_date_time():
-    # set the timezone to 'Europe/Istanbul'
-    tz = pytz.timezone('Europe/Istanbul')
-
-    # get the current time in Istanbul's local time
-    now = datetime.datetime.now(tz)
-
-    # extract the month, day, hour, and minute from the current time
-    current_month = now.month
-    current_day = now.day
-    current_hour = now.hour
-    current_minute = now.minute
-
-    # convert the values to strings
-    current_month_str = str(current_month).zfill(2) # adds a leading zero if necessary
-    current_day_str = str(current_day).zfill(2)
-    current_hour_str = str(current_hour).zfill(2)
-    current_minute_str = str(current_minute).zfill(2)
-
-    # create a date/time string in the format: "MM/DD HH:MM"
-    date_time = current_month_str + '/' + current_day_str + ' ' + current_hour_str + ':' + current_minute_str
-
-    # return the date/time string
-    return date_time
-
 
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
@@ -51,12 +24,17 @@ async def add_heat(value:models.Arduino):
 
   return {"SELAM"}
 
-
-
 @ard.get("/get")
 async def get_heat(temperature:str,humidity:str):
         url = 'https://fastapi-arduino.herokuapp.com/arduino/heat'
-        
+        now = datetime.now()
+
+        current_month = str(now.month)
+        current_day = str(now.day)
+        current_hour = str(now.hour)
+        current_minute = str(now.minute)
+
+        date_time = str(current_month+"/"+current_day+"/"+current_hour+"/"+current_minute)
 
         # create the data to be sent in the HTTP POST request
         tvalue=str(temperature)
@@ -64,7 +42,7 @@ async def get_heat(temperature:str,humidity:str):
         data = {
             'temperature': tvalue,
             'humidity': hvalue,
-            'date_time': get_current_date_time()
+            'date_time': date_time
         }
         header = {
       'Content-Type': 'application/json',

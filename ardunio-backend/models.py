@@ -17,5 +17,5 @@ class User(BaseModel):
 class Arduino(BaseModel):
     temperature:str
     humidity:str
-    date_time1:str
+    date_time:str
     

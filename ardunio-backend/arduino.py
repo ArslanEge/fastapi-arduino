@@ -16,6 +16,10 @@ ard=APIRouter(
     prefix="/arduino",
     tags=["arduino"]
 )
+flutter=APIRouter(
+    prefix="/arduino",
+    tags=["arduino"]
+)
 
 @ard.delete("/delete/{delete_id}")
 async def delete_heat(username:str,delete_id:str):

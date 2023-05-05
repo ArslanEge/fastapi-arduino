@@ -18,7 +18,7 @@ app.include_router(ard)
 app.include_router(flutter)
 
 origins = [
-   "http:// 192.168.0.11.:8000",
+   "htp:// 192.168.0.11.:8000",
    "http://localhost",
    "http://localhost:8080",
 ]

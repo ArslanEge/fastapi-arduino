@@ -23,8 +23,8 @@ ard=APIRouter(
     tags=["arduino"]
 )
 flutter=APIRouter(
-    prefix="/arduino",
-    tags=["arduino"]
+    prefix="/flutter",
+    tags=["flutter"]
 )
 
 

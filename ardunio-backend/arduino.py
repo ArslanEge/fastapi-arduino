@@ -20,6 +20,8 @@ ard=APIRouter(
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
   
+  global index
+
   heat_dicit=value.dict()
   
   result=db.heat_col.insert_one(heat_dicit)
@@ -27,9 +29,10 @@ async def add_heat(value:models.Arduino):
   db.user_col.update_one(
             {"username":liste[index]}, {"$push": {"heat":heat_id}}
         )
+  
   index=index+1
-  
-  
+  if(index==3):
+      index=0
   
   return {"SELAM"}
 

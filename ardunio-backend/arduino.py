@@ -91,8 +91,5 @@ async def get_heat(temperature:str,humidity:str):
 
         return "WORKED"
 
-    flutter=APIRouter(
-    prefix="/flutter",
-    tags=["flutter"]
-)
+    
 

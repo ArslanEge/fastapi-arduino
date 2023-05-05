@@ -7,7 +7,6 @@ import tokenfile as tf
 import datetime
 from datetime import datetime
 import requests
-import pytz
 
 
 
@@ -28,9 +27,8 @@ async def add_heat(value:models.Arduino):
 @ard.get("/get")
 async def get_heat(temperature:str,humidity:str):
         url = 'https://fastapi-arduino.herokuapp.com/arduino/heat'
-        
-        tz = pytz.timezone('Europe/Istanbul')
-        now = datetime.datetime.now(tz)
+        now = datetime.now()
+
         current_month = str(now.month)
         current_day = str(now.day)
         current_hour = str(now.hour)

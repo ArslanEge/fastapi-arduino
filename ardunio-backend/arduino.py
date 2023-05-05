@@ -8,6 +8,7 @@ import datetime
 from datetime import datetime
 from bson.objectid import ObjectId
 from jose import JWTError, jwt
+from main import app
 import requests
 
 
@@ -27,7 +28,7 @@ flutter=APIRouter(
     tags=["flutter"]
 )
 
-@flutter.middleware("http")
+@app.middleware("http")
 async def flutter_middleware(request: Request, call_next):
     headers = request.headers
     if "Authorization" in headers:
@@ -55,6 +56,7 @@ async def flutter_middleware(request: Request, call_next):
     response = await call_next(request)
     return response
 
+flutter.middleware("http")(flutter_middleware)
 
 @flutter.get("/getHeat/{date_time}")
 async def get_user_courses(request: Request,data_time:str):

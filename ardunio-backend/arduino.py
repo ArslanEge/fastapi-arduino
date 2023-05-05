@@ -1,4 +1,4 @@
-from fastapi import APIRouter,HTTPException,status,Request
+from fastapi import APIRouter,HTTPException,status
 import models
 from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
@@ -7,9 +7,6 @@ import tokenfile as tf
 import datetime
 from datetime import datetime
 from bson.objectid import ObjectId
-from jose import JWTError, jwt
-
-import requests
 
 
 index=0

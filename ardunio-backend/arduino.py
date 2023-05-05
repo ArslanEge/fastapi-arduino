@@ -26,7 +26,7 @@ async def add_heat(value:models.Arduino):
 
 @ard.get("/get")
 async def get_heat(temperature:str,humidity:str):
-        url = 'http://localhost:8000/arduino/heat'
+        url = 'https://fastapi-arduino.herokuapp.com/arduino/heat'
         now = datetime.now()
 
         current_month = str(now.month)

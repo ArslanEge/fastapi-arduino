@@ -17,6 +17,25 @@ ard=APIRouter(
     tags=["arduino"]
 )
 
+@ard.delete("/delete/{delete_id}")
+async def delete_heat(username:str,delete_id:str):
+    user = db.user_col.find_one({"username":username})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    heat_obj_id = ObjectId(delete_id)
+    if heat_obj_id not in user["heat"]:
+            raise HTTPException(status_code=400, detail="Course not found for user")
+
+        # Delete the course from the courses collection
+    db.heat_col.delete_one({"_id":heat_obj_id})
+    
+    db.user_col.update_one(
+            {"username":username},
+            {"$pull": {"courses":heat_obj_id}},
+        )
+    return {"item was deleted"}
+
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
   global index

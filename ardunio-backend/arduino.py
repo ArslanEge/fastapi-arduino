@@ -29,8 +29,10 @@ async def add_heat(value:models.Arduino):
   db.user_col.update_one(
             {"username":liste[index]}, {"$push": {"heat":heat_id}}
         )
-  
-  
+  global index
+  index=index+1
+  if(index==3):
+    index=0
   
   return {"SELAM"}
 

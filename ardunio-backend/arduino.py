@@ -18,7 +18,8 @@ ard=APIRouter(
 )
 
 @ard.post("/heat")
-async def add_heat(value:models.Arduino,index:int=0):
+async def add_heat(value:models.Arduino):
+  global index
   
   heat_dicit = value.dict()
   

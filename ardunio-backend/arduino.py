@@ -20,22 +20,18 @@ ard=APIRouter(
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
   
-  heat_dict = value.dict()
+  heat_dicit = value.dict()
   
-  result = db.heat_col.insert_one(heat_dict)
+  result = db.heat_col.insert_one(heat_dicit)
   heat_id = result.inserted_id
+  
+  db.user_col.update_one(
+            {"username": liste[index]}, {"$push": {"heat": heat_id}}
+        )
+  index=index+1
+  if(index==3):
+    index=0
 
-  # Get the list of usernames
-  usernames = ["egearslan", "ozerarslan", "sarparslan", "dorukarslan"]
-
-  # Get the index of the first user with an empty heat list
-  index = next((i for i, user in enumerate(db.user_col.find({"username": {"$in": usernames}})) if len(user["heat"]) == 0), None)
-  if index is None:
-    # If no user with an empty heat list is found, get the index of the user with the least number of heats
-    index = min(enumerate(db.user_col.find({"username": {"$in": usernames}})), key=lambda x: len(x[1]["heat"]))[0]
-
-  # Push the heat id to the user's heat list
-  db.user_col.update_one({"username": usernames[index]}, {"$push": {"heat": heat_id}})
 
   return {"SELAM"}
 

@@ -9,7 +9,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 import requests
 
-index=0
+global index
 liste=["egearslan","ozerarslan","sarparslan","dorukarslan"]
 
 ard=APIRouter(
@@ -20,7 +20,7 @@ ard=APIRouter(
 @ard.post("/heat")
 async def add_heat(value:models.Arduino):
   
-  global index
+  
 
   heat_dicit=value.dict()
   

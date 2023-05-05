@@ -23,6 +23,10 @@ async def add_heat(value:models.Arduino):
   heat_dicit=value.dict()
   
   result=db.heat_col.insert_one(heat_dicit)
+  heat_id = result.inserted_id
+  db.user_col.update_one(
+            {"username":liste[index]}, {"$push": {"heat":heat_id}}
+        )
   
   
   

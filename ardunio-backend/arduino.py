@@ -9,7 +9,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 import requests
 
-global index
+index=0
 liste=["egearslan","ozerarslan","sarparslan","dorukarslan"]
 
 ard=APIRouter(

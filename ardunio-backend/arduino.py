@@ -10,6 +10,7 @@ import requests
 import pytz
 
 
+
 ard=APIRouter(
     prefix="/arduino",
     tags=["arduino"]
@@ -27,6 +28,7 @@ async def add_heat(value:models.Arduino):
 @ard.get("/get")
 async def get_heat(temperature:str,humidity:str):
         url = 'https://fastapi-arduino.herokuapp.com/arduino/heat'
+        
         tz = pytz.timezone('Europe/Istanbul')
         now = datetime.datetime.now(tz)
         current_month = str(now.month)

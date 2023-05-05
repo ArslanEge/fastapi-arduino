@@ -32,7 +32,7 @@ async def delete_heat(username:str,delete_id:str):
     
     db.user_col.update_one(
             {"username":username},
-            {"$pull": {"courses":heat_obj_id}},
+            {"$pull": {"heat":heat_obj_id}},
         )
     return {"item was deleted"}
 

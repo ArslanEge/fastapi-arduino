@@ -6,9 +6,11 @@ import database as db
 import tokenfile as tf
 import datetime
 from datetime import datetime
+from bson.objectid import ObjectId
 import requests
 
-
+index=0
+liste=["egearslan","ozerarslan","sarparslan","dorukarslan"]
 
 ard=APIRouter(
     prefix="/arduino",
@@ -21,6 +23,14 @@ async def add_heat(value:models.Arduino):
   heat_dicit=value.dict()
   
   result=db.heat_col.insert_one(heat_dicit)
+  db.user_col.update_one(
+            {"_id": ObjectId(liste[index].state.userID)}, {"$push": {"heat": result.inserted_id}}
+        )
+  index=index+1
+  if(index==3):
+      index=0
+  
+  
 
   return {"SELAM"}
 

@@ -64,7 +64,6 @@ async def get_user_courses(request: Request,date_time:str):
             raise HTTPException(status_code=404, detail="User not found")
 
         heat_ids = user["heat"]
-        heats = []
         for heat_id in heat_ids:
             heat = db.heat_col.find_one({"_id": ObjectId(heat_id)})
             if heat:
@@ -74,7 +73,6 @@ async def get_user_courses(request: Request,date_time:str):
                 
 
         return {"heat could not found"}
-            
     except:
         return JSONResponse(
             status_code=403,

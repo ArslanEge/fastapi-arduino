@@ -70,7 +70,7 @@ async def get_user_courses(request: Request, date_time: str):
                 # convert ObjectId to string
                 if str(heat["date_time"]) == date_time:
                     heat["_id"] = str(heat["_id"])
-                    return {"heat": heat}
+                    return {"status":"success","heat": heat}
 
         return {"heat could not found"}
     except:

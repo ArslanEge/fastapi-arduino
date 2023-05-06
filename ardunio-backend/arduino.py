@@ -57,7 +57,7 @@ async def flutter_middleware(request: Request, call_next):
 
 
 @flutter.get("/getHeat/{date_time}")
-async def get_user_courses(request: Request,data_time:str):
+async def get_user_courses(request: Request,date_time:str):
     try:
         user = db.user_col.find_one({"_id": ObjectId(request.state.userID)})
         if not user:
@@ -69,7 +69,7 @@ async def get_user_courses(request: Request,data_time:str):
             heat = db.heat_col.find_one({"_id": ObjectId(heat_id)})
             if heat:
                 # convert ObjectId to string
-                if(heat["date_time"]==data_time):
+                if(heat["date_time"]==date_time):
                     return{"heat":heat}
                 
 

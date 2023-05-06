@@ -130,7 +130,7 @@ async def get_heat(temperature:str,humidity:str):
         current_hour = str(now.hour+3)
         current_minute = str(now.minute)
 
-        date_time = str(current_month+"/"+current_day+"/"+current_hour+"/"+current_minute)
+        date_time = str(current_month+"."+current_day+"."+current_hour+"."+current_minute)
 
         # create the data to be sent in the HTTP POST request
         tvalue=str(temperature)

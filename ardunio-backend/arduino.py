@@ -68,11 +68,12 @@ async def get_user_courses(request: Request,date_time:str):
             heat = db.heat_col.find_one({"_id": ObjectId(heat_id)})
             if heat:
                 # convert ObjectId to string
-                if(heat["date_time"]==date_time):
-                    return{"heat":heat}
-                
+                if heat["date_time"] == date_time:
+                    return {"heat": heat}
 
-        return {"heat could not found"}
+        # If we reach this point, we didn't find a matching heat
+        raise HTTPException(status_code=404, detail="Heat not found")
+
     except:
         return JSONResponse(
             status_code=403,
@@ -81,6 +82,7 @@ async def get_user_courses(request: Request,date_time:str):
                 "message": "Couldn't get the courses!",
             },
         )
+
 
 @ard.delete("/delete/{delete_id}")
 async def delete_heat(username:str,delete_id:str):

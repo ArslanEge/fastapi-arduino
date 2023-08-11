@@ -137,7 +137,7 @@ async def add_heat(value:models.Arduino):
   index = (index + 1) % len(liste)
 
 
-  return {"SELAM":heat_id}
+  return {"SELAM"}
 
 
 @ard.get("/get")

@@ -122,6 +122,24 @@ async def add_heat(value:models.Arduino):
   return {"SELAM"}
 
 
+@ard.post("/deneme")
+async def add_heat(value:models.Arduino):
+  global index
+  
+  heat_dicit = value.dict()
+  
+  result = db.heat_col.insert_one(heat_dicit)
+  heat_id = result.inserted_id
+  
+  db.user_col.update_one(
+            {"username": liste[index]}, {"$push": {"heat": heat_id}}
+        )
+  index = (index + 1) % len(liste)
+
+
+  return {"SELAM":heat_id}
+
+
 @ard.get("/get")
 async def get_heat(temperature:str,humidity:str):
         url = 'https://fastapi-arduino.herokuapp.com/arduino/heat'
